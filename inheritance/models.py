@@ -17,6 +17,10 @@ class ColouredObject(object):
 class LivingObject(object):
     colour = models.CharField(max_length=12)
     born = models.DateTimeField()
+    
+
+class DeadOrAliveObject(LivingObject):
+    born = models.BooleanField()
 
 
 class Rabbit(inherit(
@@ -29,4 +33,15 @@ class Parrot(inherit(
     LivingObject,
     ColouredObject,
     colour=models.CharField(max_length=13))):
+    pass
+
+
+class DeadOrAliveParrot(inherit(
+    DeadOrAliveObject)):
+    pass
+
+
+class DeadOrAliveLivingObject(inherit(
+    LivingObject,
+    born = models.BooleanField())):
     pass
