@@ -2,46 +2,48 @@ from inheritance import inherit
 from django.db import models
 
 
-class ColouredObject(object):
-    colour = models.CharField(max_length=10)
-    born = models.DateField()
-
+class SomeBaseClass(object):
     @classmethod
-    def x(cls):
-        return 'x'
+    def classmethod(cls):
+        return 'class method result'
 
-    def y(self):
-        return 'y'
-
-
-class LivingObject(object):
-    colour = models.CharField(max_length=12)
-    born = models.DateTimeField()
-    
-
-class DeadOrAliveObject(LivingObject):
-    born = models.BooleanField()
+    def method(self):
+        return 'method result'
 
 
-class Rabbit(inherit(
-    ColouredObject,
-    LivingObject)):
+class DeadSince(SomeBaseClass):
+    died = models.DateField()
+
+
+class MaybeStillAlive(SomeBaseClass):
+    died = models.BooleanField()
+
+
+class DeadForYears(SomeBaseClass):
+    died = models.IntegerField()
+
+
+class DeadForYearsParrot(inherit(DeadForYears)):
     pass
 
 
-class Parrot(inherit(
-    LivingObject,
-    ColouredObject,
-    colour=models.CharField(max_length=13))):
+class DeadModel(models.Model):
+    died = models.URLField()
+
+
+class ParrotSinceMaybeDead(inherit(
+    DeadSince,
+    MaybeStillAlive)):
     pass
 
 
-class DeadOrAliveParrot(inherit(
-    DeadOrAliveObject)):
+class ParrotMaybeDeadSince(inherit(
+    MaybeStillAlive,
+    DeadSince)):
     pass
 
 
-class DeadOrAliveLivingObject(inherit(
-    LivingObject,
-    born = models.BooleanField())):
+class ParrotDeadForReason(inherit(
+    MaybeStillAlive,
+    died=models.TextField())):
     pass

@@ -13,7 +13,6 @@ def inherit(*classes, **fixed_fields):
     overriden in sublasses any more and which names cannot clash in two parent
     classes.
     '''
-
     ConstructionModel = type('NewModel', classes, {})
 
     class NewModel(models.Model, ConstructionModel):
@@ -36,5 +35,6 @@ def inherit(*classes, **fixed_fields):
                 fixed_fields[field_name] = field
     # when all Fields are extracted settle them for the class
     for k, v in fixed_fields.iteritems():
+        setattr(NewModel, k, v)
         NewModel.add_to_class(k, v)
     return NewModel
